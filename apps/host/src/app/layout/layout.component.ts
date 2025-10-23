@@ -2,8 +2,8 @@ import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent as DesignSystemLayout } from '@contracts/design-system';
+import { AuthService } from '@contracts/shared';
 import { Store } from '@ngrx/store';
-import { AuthService } from '../services/auth.service';
 import {
   AppState,
   closeMobileMenu,
@@ -36,14 +36,12 @@ import {
   `,
 })
 export class LayoutComponent {
-  // Selectors from NgRx Store
   isSidebarExpanded$ = this.store.select(selectIsSidebarExpanded);
   isMobileMenuOpen$ = this.store.select(selectIsMobileMenuOpen);
   userInitials$ = this.store.select(selectUserInitials);
   userName$ = this.store.select(selectUserName);
 
   constructor(private store: Store<AppState>, public authService: AuthService) {
-    // Initialize user data from auth service
     const user = this.authService.currentUser();
     if (user?.email) {
       this.store.dispatch(setUser({ email: user.email }));
@@ -63,13 +61,8 @@ export class LayoutComponent {
   }
 
   async handleLogout() {
-    try {
-      await this.authService.logout();
-      // Limpiar el estado del store después del logout
-      const { clearUser } = await import('../store');
-      this.store.dispatch(clearUser());
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    }
+    await this.authService.logout();
+    const { clearUser } = await import('../store');
+    this.store.dispatch(clearUser());
   }
 }
