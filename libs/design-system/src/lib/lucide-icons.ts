@@ -1,9 +1,7 @@
 export {
-  // Status
   AlertCircle,
   AlertTriangle,
   ArrowDown,
-  // Sorting
   ArrowUp,
   ArrowUpDown,
   BarChart3,
@@ -11,19 +9,16 @@ export {
   Check,
   CheckCircle,
   ChevronDown,
-  // Navigation
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   ChevronsLeft,
   ChevronsRight,
-  ChevronUp,
   CreditCard,
   DollarSign,
   Download,
-  // Actions
   Edit,
   Eye,
-  // Files
   File,
   FileText,
   Filter,
@@ -36,7 +31,6 @@ export {
   MoreVertical,
   Package,
   Plus,
-  // UI
   Search,
   Settings,
   Trash2,

@@ -19,7 +19,6 @@ import {
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
-  // Icons - need to be registered for Lucide to work
   readonly Home = Home;
   readonly FileText = FileText;
   readonly LogOut = LogOut;
@@ -28,15 +27,12 @@ export class LayoutComponent {
   readonly ChevronRight = ChevronRight;
   readonly Menu = Menu;
 
-  // State inputs (from NgRx Store)
   @Input() isSidebarExpanded: boolean | null = true;
   @Input() isMobileMenuOpen: boolean | null = false;
 
-  // User info inputs
   @Input() userInitials: string | null = 'U';
   @Input() userName: string | null = 'Usuario';
 
-  // Callbacks
   @Input() onToggleSidebar?: () => void;
   @Input() onToggleMobileMenu?: () => void;
   @Input() onCloseMobileMenu?: () => void;

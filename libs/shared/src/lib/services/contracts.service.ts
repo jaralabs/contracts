@@ -77,9 +77,6 @@ export class ContractsService {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl || 'http://localhost:3000';
 
-  /**
-   * Obtener lista de contratos con paginación y filtros
-   */
   getContracts(filters?: ContractFilters): Observable<Contrato[]> {
     let params = new HttpParams();
 
@@ -87,7 +84,6 @@ export class ContractsService {
       if (filters.estado) {
         params = params.set('estado', filters.estado);
       }
-      // NO aplicamos busqueda aquí, la haremos en el frontend
       if (filters.fecha_fin) {
         params = params.set('fecha_fin', filters.fecha_fin);
       }
@@ -105,7 +101,6 @@ export class ContractsService {
       .get<Contrato[]>(`${this.apiUrl}/contratos`, { params })
       .pipe(
         map((contratos) => {
-          // Filtrar por búsqueda en frontend (id o titulo)
           if (filters?.busqueda) {
             const searchTerm = filters.busqueda.toLowerCase();
             return contratos.filter(

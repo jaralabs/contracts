@@ -28,12 +28,10 @@ export class SignaturePageComponent implements OnInit, OnDestroy {
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
 
-  // Subject para búsqueda con debounce
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
   private currentFilterValues?: FilterValues;
 
-  // Filtros
   searchQuery = signal<string>('');
 
   filterConfigs: FilterConfig[] = [
@@ -137,7 +135,6 @@ export class SignaturePageComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit() {
-    // Configurar debounce para búsqueda
     this.searchSubject
       .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((searchTerm) => {
@@ -220,6 +217,6 @@ export class SignaturePageComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(event: { record: Contrato; index: number }) {
-    this.router.navigate(['/erp/contract', event.record.id]);
+    this.router.navigate(['/erp/signature', event.record.id]);
   }
 }

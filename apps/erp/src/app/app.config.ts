@@ -6,7 +6,6 @@ import {
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 
-// Modo zoneless con signals para mejor performance
 export const appConfig: ApplicationConfig = {
   providers: [
     ɵprovideZonelessChangeDetection(),
