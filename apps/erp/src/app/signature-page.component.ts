@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -11,6 +11,8 @@ import {
   TableColumn,
 } from '@contracts/design-system';
 import { ContractFilters, ContractsService, Contrato } from '@contracts/shared';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signature-page',
@@ -18,13 +20,18 @@ import { ContractFilters, ContractsService, Contrato } from '@contracts/shared';
   imports: [CommonModule, DsTableComponent, FormsModule, FiltersComponent],
   templateUrl: './signature-page.component.html',
 })
-export class SignaturePageComponent implements OnInit {
+export class SignaturePageComponent implements OnInit, OnDestroy {
   private contractsService = inject(ContractsService);
   private router = inject(Router);
 
   contracts = signal<Contrato[]>([]);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
+
+  // Subject para búsqueda con debounce
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+  private currentFilterValues?: FilterValues;
 
   // Filtros
   searchQuery = signal<string>('');
@@ -130,15 +137,34 @@ export class SignaturePageComponent implements OnInit {
   };
 
   ngOnInit() {
+    // Configurar debounce para búsqueda
+    this.searchSubject
+      .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((searchTerm) => {
+        this.searchQuery.set(searchTerm);
+        this.loadContracts(this.currentFilterValues);
+      });
+
     this.loadContracts();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  onSearchChange(value: string): void {
+    this.searchSubject.next(value);
+  }
+
   onFiltersChange(filterValues: FilterValues): void {
+    this.currentFilterValues = filterValues;
     this.loadContracts(filterValues);
   }
 
   onClearFilters(): void {
     this.searchQuery.set('');
+    this.currentFilterValues = undefined;
     this.loadContracts();
   }
 

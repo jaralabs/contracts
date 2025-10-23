@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../environment';
 
 export interface Contrato extends Record<string, unknown> {
@@ -86,9 +87,7 @@ export class ContractsService {
       if (filters.estado) {
         params = params.set('estado', filters.estado);
       }
-      if (filters.busqueda) {
-        params = params.set('q', filters.busqueda);
-      }
+      // NO aplicamos busqueda aquí, la haremos en el frontend
       if (filters.fecha_fin) {
         params = params.set('fecha_fin', filters.fecha_fin);
       }
@@ -102,7 +101,22 @@ export class ContractsService {
       }
     }
 
-    return this.http.get<Contrato[]>(`${this.apiUrl}/contratos`, { params });
+    return this.http
+      .get<Contrato[]>(`${this.apiUrl}/contratos`, { params })
+      .pipe(
+        map((contratos) => {
+          // Filtrar por búsqueda en frontend (id o titulo)
+          if (filters?.busqueda) {
+            const searchTerm = filters.busqueda.toLowerCase();
+            return contratos.filter(
+              (c) =>
+                c.id.toLowerCase().includes(searchTerm) ||
+                c.titulo.toLowerCase().includes(searchTerm)
+            );
+          }
+          return contratos;
+        })
+      );
   }
 
   /**
