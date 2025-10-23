@@ -17,7 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@contracts/design-system": ["libs/design-system/src/index.ts"],
-      "@contracts/design-system/*": ["libs/design-system/src/lib/*"]
+      "@contracts/design-system/*": ["libs/design-system/src/lib/*"],
+      "@contracts/shared": ["libs/shared/src/index.ts"],
+      "@contracts/shared/config": ["libs/shared/src/index.ts"]
     },
     "types": []
   },
