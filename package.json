@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "env:generate": "node scripts/generate-env.js",
     "start": "nx serve",
     "start:host": "nx serve host --port=4200",
     "start:erp": "nx serve erp --port=4201",

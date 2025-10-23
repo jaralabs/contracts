@@ -32,6 +32,7 @@ cp .env.example .env
 Editar el archivo `.env` con tus credenciales de AWS Cognito:
 
 ```env
+API_URL= [local](http://localhost:3000)
 AWS_USER_POOL_ID= us-east-1_cURobggRv
 AWS_USER_POOL_CLIENT_ID= 70km7nv8tdu1upubtm8le7evep
 AWS_IDENTITY_POOL_ID= us-east-1:7b1efcc9-3475-451b-899e-b5ebb9853bce
@@ -203,16 +204,17 @@ git commit -m "feat: add contract filtering functionality"
 
 ## 🔏 Scripts disponibles
 
-| Comando               | Descripción                    |
-| --------------------- | ------------------------------ |
-| `npm run dev`         | Ejecuta api, host, erp         |
-| `npm run api`         | Inicia el mock API             |
-| `npx nx serve host`   | Inicia la aplicación principal |
-| `npx nx serve erp`    | Inicia el microfrontend ERP    |
-| `npx nx test`         | Ejecuta pruebas unitarias      |
-| `npx playwright test` | Ejecuta pruebas E2E            |
-| `npx nx build host`   | Compila aplicación host        |
-| `npx nx lint host`    | Ejecuta ESLint                 |
+| Comando                | Descripción                    |
+| ---------------------- | ------------------------------ |
+| `npm run env:generate` | Crea el file env requerido     |
+| `npm run dev`          | Ejecuta api, host, erp         |
+| `npm run api`          | Inicia el mock API             |
+| `npx nx serve host`    | Inicia la aplicación principal |
+| `npx nx serve erp`     | Inicia el microfrontend ERP    |
+| `npx nx test`          | Ejecuta pruebas unitarias      |
+| `npx playwright test`  | Ejecuta pruebas E2E            |
+| `npx nx build host`    | Compila aplicación host        |
+| `npx nx lint host`     | Ejecuta ESLint                 |
 
 ## 📄 Licencia
 
