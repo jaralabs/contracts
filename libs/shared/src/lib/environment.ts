@@ -11,15 +11,22 @@ export interface Environment {
   };
 }
 
+function readEnv(name: string, fallback = ''): string {
+  const value =
+    (typeof process !== 'undefined' && process.env && process.env[name]) ||
+    fallback;
+  return value;
+}
+
 export const environment: Environment = {
-  production: false,
-  apiUrl: 'http://localhost:3000',
+  production: readEnv('NODE_ENV', 'development') === 'production',
+  apiUrl: readEnv('API_URL', 'http://localhost:3000'),
   aws: {
-    region: 'us-east-1',
+    region: readEnv('AWS_REGION', 'us-east-1'),
     cognito: {
-      userPoolId: 'us-east-1_cURobggRv',
-      userPoolClientId: '70km7nv8tdu1upubtm8le7evep',
-      identityPoolId: 'us-east-1:7b1efcc9-3475-451b-899e-b5ebb9853bce',
+      userPoolId: readEnv('AWS_USER_POOL_ID'),
+      userPoolClientId: readEnv('AWS_USER_POOL_CLIENT_ID'),
+      identityPoolId: readEnv('AWS_IDENTITY_POOL_ID'),
     },
   },
 };
