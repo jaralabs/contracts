@@ -61,6 +61,7 @@ export interface ContractFilters {
   estado?: string;
   fecha_inicio_desde?: string;
   fecha_inicio_hasta?: string;
+  fecha_fin?: string;
   busqueda?: string;
   page?: number;
   pageSize?: number;
@@ -87,6 +88,9 @@ export class ContractsService {
       }
       if (filters.busqueda) {
         params = params.set('q', filters.busqueda);
+      }
+      if (filters.fecha_fin) {
+        params = params.set('fecha_fin', filters.fecha_fin);
       }
       if (filters.sortBy) {
         params = params.set('_sort', filters.sortBy);

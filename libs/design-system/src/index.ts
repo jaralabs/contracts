@@ -11,6 +11,7 @@ export * from './components/label/label.component';
 
 // Layout Components
 export * from './components/card/card.component';
+export * from './components/filters/filters.component';
 export * from './components/layout/layout.component';
 export * from './components/tabs/tabs.component';
 

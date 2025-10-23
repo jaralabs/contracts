@@ -52,7 +52,7 @@ export class ContractDetailComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/signature']);
+    this.router.navigate(['/erp/signature']);
   }
 
   getEstadoBadgeClass(estado: string): string {

@@ -1,10 +1,50 @@
 <div class="h-full overflow-y-auto bg-gray-50 dark:bg-gray-900 scrollbar-hide">
-  <div class="mb-4 md:mb-6">
+  <!-- Header con búsqueda -->
+  <div class="mb-4 md:mb-6 flex items-center gap-4">
     <h1
-      class="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white"
+      class="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white flex-shrink-0"
     >
       Gestión de Contratos
     </h1>
+
+    <!-- Barra de búsqueda -->
+    <div class="flex-1 max-w-lg">
+      <div class="relative">
+        <div
+          class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+        >
+          <svg
+            class="w-4 h-4 text-gray-500 dark:text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="loadContracts()"
+          placeholder="Buscar por orden id, cliente..."
+          class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Componente de Filtros -->
+  <div class="mb-6">
+    <lib-filters
+      [filters]="filterConfigs"
+      (filtersChange)="onFiltersChange($event)"
+      (clear)="onClearFilters()"
+    ></lib-filters>
   </div>
 
   <lib-ds-table

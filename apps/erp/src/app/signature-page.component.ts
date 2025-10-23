@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   DsTableComponent,
+  FilterConfig,
+  FilterValues,
+  FiltersComponent,
   PaginationConfig,
   TableColumn,
 } from '@contracts/design-system';
-import { ContractsService, Contrato } from '@contracts/shared';
+import { ContractFilters, ContractsService, Contrato } from '@contracts/shared';
 
 @Component({
   selector: 'app-signature-page',
   standalone: true,
-  imports: [CommonModule, DsTableComponent],
+  imports: [CommonModule, DsTableComponent, FormsModule, FiltersComponent],
   templateUrl: './signature-page.component.html',
 })
 export class SignaturePageComponent implements OnInit {
@@ -21,6 +25,31 @@ export class SignaturePageComponent implements OnInit {
   contracts = signal<Contrato[]>([]);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
+
+  // Filtros
+  searchQuery = signal<string>('');
+
+  filterConfigs: FilterConfig[] = [
+    {
+      key: 'estado',
+      label: 'Estatus Ops:',
+      type: 'select',
+      options: [
+        { value: '', label: 'Todos los estados' },
+        { value: 'activo', label: 'Activo' },
+        { value: 'pendiente_firma', label: 'Pendiente de Firma' },
+        { value: 'finalizado', label: 'Finalizado' },
+        { value: 'borrador', label: 'Borrador' },
+        { value: 'suspendido', label: 'Suspendido' },
+      ],
+    },
+    {
+      key: 'fecha_vencimiento',
+      label: 'Fecha de Vencimiento:',
+      type: 'date',
+      placeholder: 'Seleccionar fecha',
+    },
+  ];
 
   columns = signal<TableColumn<Contrato>[]>([
     {
@@ -62,8 +91,21 @@ export class SignaturePageComponent implements OnInit {
 
       render: (value: unknown) => {
         if (!value) return '-';
-        const date = new Date(value as string);
-        return date.toLocaleDateString('es-ES');
+        const dateStr = value as string;
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
+      },
+    },
+    {
+      title: 'Fecha Fin',
+      dataIndex: 'fecha_fin',
+      sorter: true,
+
+      render: (value: unknown) => {
+        if (!value) return '-';
+        const dateStr = value as string;
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
       },
     },
     {
@@ -91,11 +133,34 @@ export class SignaturePageComponent implements OnInit {
     this.loadContracts();
   }
 
-  loadContracts() {
+  onFiltersChange(filterValues: FilterValues): void {
+    this.loadContracts(filterValues);
+  }
+
+  onClearFilters(): void {
+    this.searchQuery.set('');
+    this.loadContracts();
+  }
+
+  loadContracts(filterValues?: FilterValues) {
     this.loading.set(true);
     this.error.set(null);
 
-    this.contractsService.getContracts().subscribe({
+    const filters: ContractFilters = {};
+
+    if (this.searchQuery()) {
+      filters.busqueda = this.searchQuery();
+    }
+
+    if (filterValues?.['estado']) {
+      filters.estado = filterValues['estado'] as string;
+    }
+
+    if (filterValues?.['fecha_vencimiento']) {
+      filters.fecha_fin = filterValues['fecha_vencimiento'] as string;
+    }
+
+    this.contractsService.getContracts(filters).subscribe({
       next: (contracts) => {
         this.contracts.set(contracts);
         this.paginationConfig = {
