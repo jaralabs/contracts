@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   DsTableComponent,
   PaginationConfig,
@@ -15,6 +16,7 @@ import { ContractsService, Contrato } from '@contracts/shared';
 })
 export class SignaturePageComponent implements OnInit {
   private contractsService = inject(ContractsService);
+  private router = inject(Router);
 
   contracts = signal<Contrato[]>([]);
   loading = signal<boolean>(true);
@@ -124,5 +126,9 @@ export class SignaturePageComponent implements OnInit {
         pageSize: event.pagination.pageSize || 5,
       };
     }
+  }
+
+  onRowClick(event: { record: Contrato; index: number }) {
+    this.router.navigate(['/erp/contract', event.record.id]);
   }
 }
