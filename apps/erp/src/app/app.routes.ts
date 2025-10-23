@@ -7,15 +7,16 @@ export { ContractDetailComponent, HomeComponent, SignaturePageComponent };
 
 export const appRoutes: Route[] = [
   {
-    path: '',
-    component: HomeComponent,
-  },
-  {
     path: 'signature/:id',
     component: ContractDetailComponent,
   },
   {
     path: 'signature',
     component: SignaturePageComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'signature',
+    pathMatch: 'full',
   },
 ];

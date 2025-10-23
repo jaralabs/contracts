@@ -95,27 +95,6 @@
 
       <!-- Navigation -->
       <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto scrollbar-hide">
-        <!-- Home -->
-        <a
-          routerLink="/erp"
-          routerLinkActive="bg-orange-50 text-brand-orange"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="closeMobileMenu()"
-          [class.justify-center]="!isSidebarExpanded"
-          [class.justify-start]="isSidebarExpanded"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-secondary-700 hover:bg-secondary-100 transition-colors group relative"
-          [title]="!isSidebarExpanded ? 'Inicio' : ''"
-        >
-          <lucide-icon
-            [img]="Home"
-            [size]="20"
-            class="flex-shrink-0"
-          ></lucide-icon>
-          @if (isSidebarExpanded) {
-          <span class="font-medium text-sm">Inicio</span>
-          }
-        </a>
-
         <!-- Contratos -->
         <a
           routerLink="/erp/signature"
