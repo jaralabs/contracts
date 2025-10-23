@@ -14,10 +14,8 @@ export const appReducers: ActionReducerMap<AppState> = {
   user: userReducer,
 };
 
-// Re-export actions
 export * from './ui/ui.actions';
 export * from './user/user.actions';
 
-// Re-export selectors
 export * from './ui/ui.selectors';
 export * from './user/user.selectors';
