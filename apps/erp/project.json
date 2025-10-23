@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/erp",
         "index": "apps/erp/src/index.html",
         "main": "apps/erp/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
         "tsConfig": "apps/erp/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/erp/src/favicon.ico", "apps/erp/src/assets"],

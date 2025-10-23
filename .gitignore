@@ -41,5 +41,10 @@ Thumbs.db
 .nx/cache
 .angular
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
 # Copilot instructions (internal only)
 COPILOT.MD

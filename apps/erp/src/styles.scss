@@ -59,3 +59,17 @@
 * {
   font-family: 'Work Sans', sans-serif;
 }
+
+/* Ocultar scrollbar pero mantener funcionalidad */
+.scrollbar-hide {
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE y Edge */
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  /* Chrome, Safari y Opera */
+  display: none;
+}
