@@ -8,6 +8,11 @@ import { LoginPageComponent } from './login-page.component';
 export const appRoutes: Route[] = [
   {
     path: '',
+    redirectTo: 'erp',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
     component: LoginPageComponent,
     canActivate: [noAuthGuard],
   },
@@ -20,6 +25,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'erp',
   },
 ];
