@@ -16,7 +16,11 @@
         "polyfills": [],
         "tsConfig": "apps/host/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/host/src/favicon.ico", "apps/host/src/assets"],
+        "assets": [
+          "apps/host/src/favicon.ico",
+          "apps/host/src/assets",
+          "apps/host/src/manifest.webmanifest"
+        ],
         "styles": ["apps/host/src/styles.scss"],
         "scripts": [],
         "customWebpackConfig": {
@@ -37,7 +41,9 @@
               "maximumError": "4kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "serviceWorker": true,
+          "ngswConfigPath": "apps/host/src/ngsw-config.json"
         },
         "development": {
           "buildOptimizer": false,
