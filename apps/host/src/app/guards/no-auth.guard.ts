@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '@contracts/shared';
 
-export const authGuard: CanActivateFn = async () => {
+export const noAuthGuard: CanActivateFn = async () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -18,8 +18,8 @@ export const authGuard: CanActivateFn = async () => {
   }
 
   if (authService.isAuthenticated()) {
-    return true;
+    return router.createUrlTree(['/erp']);
   }
 
-  return router.createUrlTree(['/']);
+  return true;
 };
