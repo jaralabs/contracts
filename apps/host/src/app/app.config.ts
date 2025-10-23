@@ -1,13 +1,25 @@
-import { ApplicationConfig, isDevMode } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  ApplicationConfig,
+  isDevMode,
+  ɵprovideZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
+import { authInterceptor } from './interceptors/auth.interceptor';
+import { errorInterceptor } from './interceptors/error.interceptor';
+import { loadingInterceptor } from './interceptors/loading.interceptor';
 import { appReducers } from './store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    ɵprovideZonelessChangeDetection(),
     provideRouter(appRoutes),
+    provideHttpClient(
+      withInterceptors([loadingInterceptor, authInterceptor, errorInterceptor])
+    ),
     provideStore(appReducers),
     provideStoreDevtools({
       maxAge: 25,
