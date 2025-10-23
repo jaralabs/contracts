@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
-  EventEmitter,
-  Input,
+  input,
+  OnDestroy,
   OnInit,
-  Output,
+  output,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
@@ -37,9 +37,8 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class DsTableComponent<T extends Record<string, unknown>>
-  implements OnInit
+  implements OnInit, OnDestroy
 {
-  // Lucide Icons
   readonly ChevronDown = ChevronDown;
   readonly ChevronUp = ChevronUp;
   readonly ArrowUpDown = ArrowUpDown;
@@ -48,20 +47,22 @@ export class DsTableComponent<T extends Record<string, unknown>>
   readonly ChevronLeft = ChevronLeft;
   readonly ChevronRight = ChevronRight;
 
-  @Input() dataSource: T[] = [];
-  @Input() columns: TableColumn<T>[] = [];
-  @Input() pagination: PaginationConfig | false = false;
-  @Input() loading = false;
-  @Input() bordered = false;
-  @Input() size: 'small' | 'middle' | 'large' = 'middle';
-  @Input() rowKey: string | ((record: T, index: number) => string) = 'id';
-  @Input() rowSelection?: RowSelection<T>;
-  @Input() expandable?: ExpandableConfig<T>;
-  @Input() serverSide = false;
-  @Input() error: Error | null = null;
-  @Input() responsive: boolean | ResponsiveConfig = true;
+  private resizeListener?: () => void;
 
-  @Output() changeEvent = new EventEmitter<{
+  dataSource = input<T[]>([]);
+  columns = input<TableColumn<T>[]>([]);
+  pagination = input<PaginationConfig | false>(false);
+  loading = input(false);
+  bordered = input(false);
+  size = input<'small' | 'middle' | 'large'>('middle');
+  rowKey = input<string | ((record: T, index: number) => string)>('id');
+  rowSelection = input<RowSelection<T> | undefined>(undefined);
+  expandable = input<ExpandableConfig<T> | undefined>(undefined);
+  serverSide = input(false);
+  error = input<Error | null>(null);
+  responsive = input<boolean | ResponsiveConfig>(true);
+
+  changeEvent = output<{
     pagination: PaginationConfig | false;
     filters: Record<string, string[]>;
     sorter: SorterResult<T>[];
@@ -71,9 +72,11 @@ export class DsTableComponent<T extends Record<string, unknown>>
     };
   }>();
 
-  @Output() rowClickEvent = new EventEmitter<{ record: T; index: number }>();
+  rowClickEvent = output<{ record: T; index: number }>();
 
-  // Signals
+  protected windowWidth = signal(
+    typeof window !== 'undefined' ? window.innerWidth : 1920
+  );
   protected currentPage = signal(1);
   protected pageSize = signal(10);
   protected sorters = signal<SorterResult<T>[]>([]);
@@ -81,17 +84,17 @@ export class DsTableComponent<T extends Record<string, unknown>>
   protected selectedRowKeys = signal<string[]>([]);
   protected expandedRowKeys = signal<string[]>([]);
 
-  // Computed values
   protected safeColumns = computed(() =>
-    Array.isArray(this.columns) ? this.columns : []
+    Array.isArray(this.columns()) ? this.columns() : []
   );
 
-  protected safeData = computed(() =>
-    Array.isArray(this.dataSource) ? this.dataSource : []
-  );
+  protected safeData = computed(() => {
+    const data = this.dataSource();
+    return Array.isArray(data) ? data : [];
+  });
 
   protected filteredData = computed(() => {
-    if (this.serverSide) return this.safeData();
+    if (this.serverSide()) return this.safeData();
 
     const data = this.safeData();
     const activeFilters = Object.entries(this.filters()).filter(
@@ -108,7 +111,7 @@ export class DsTableComponent<T extends Record<string, unknown>>
   });
 
   protected sortedData = computed(() => {
-    if (this.serverSide) return this.filteredData();
+    if (this.serverSide()) return this.filteredData();
 
     const data = [...this.filteredData()];
     const activeSorters = this.sorters().filter((s) => s.order);
@@ -143,8 +146,8 @@ export class DsTableComponent<T extends Record<string, unknown>>
   });
 
   protected paginatedData = computed(() => {
-    if (this.pagination === false) return this.sortedData();
-    if (this.serverSide) return this.sortedData();
+    if (this.pagination() === false) return this.sortedData();
+    if (this.serverSide()) return this.sortedData();
 
     const start = (this.currentPage() - 1) * this.pageSize();
     const end = start + this.pageSize();
@@ -168,34 +171,66 @@ export class DsTableComponent<T extends Record<string, unknown>>
       const breakpoint = config.breakpoint || 'lg';
       const breakpointWidth = breakpointWidths[breakpoint] || 1280;
 
-      return (
-        (typeof window !== 'undefined' ? window.innerWidth : 1920) <
-        breakpointWidth
-      );
+      return this.windowWidth() < breakpointWidth;
     }
 
     return false;
   });
 
+  protected paginationValue = computed(() => this.pagination());
+  protected rowSelectionValue = computed(() => this.rowSelection());
+  protected expandableValue = computed(() => this.expandable());
+  protected sizeValue = computed(() => this.size());
+  protected totalRows = computed(() => {
+    const pag = this.pagination();
+    return pag !== false && pag.totalRows
+      ? pag.totalRows
+      : this.sortedData().length;
+  });
+  protected pageSizeOptions = computed(() => {
+    const pag = this.pagination();
+    return pag !== false && pag.pageSizeOptions ? pag.pageSizeOptions : [];
+  });
+  protected showSizeChanger = computed(() => {
+    const pag = this.pagination();
+    return pag !== false && pag.showSizeChanger;
+  });
+
   ngOnInit(): void {
-    if (this.pagination && typeof this.pagination === 'object') {
-      if (this.pagination.current)
-        this.currentPage.set(this.pagination.current);
-      if (this.pagination.pageSize) this.pageSize.set(this.pagination.pageSize);
+    const paginationValue = this.pagination();
+    if (paginationValue && typeof paginationValue === 'object') {
+      if (paginationValue.current)
+        this.currentPage.set(paginationValue.current);
+      if (paginationValue.pageSize) this.pageSize.set(paginationValue.pageSize);
+    }
+
+    if (typeof window !== 'undefined') {
+      this.resizeListener = () => {
+        this.windowWidth.set(window.innerWidth);
+      };
+      window.addEventListener('resize', this.resizeListener);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeListener && typeof window !== 'undefined') {
+      window.removeEventListener('resize', this.resizeListener);
     }
   }
 
   protected getRowKey(record: T, index: number): string {
-    if (typeof this.rowKey === 'function') {
-      return this.rowKey(record, index);
+    const rowKeyValue = this.rowKey();
+    if (typeof rowKeyValue === 'function') {
+      return rowKeyValue(record, index);
     }
-    return String(record[this.rowKey as keyof T] ?? index.toString());
+    return String(record[rowKeyValue as keyof T] ?? index.toString());
   }
 
   protected getResponsiveConfig(): ResponsiveConfig | null {
-    if (!this.responsive) return null;
+    const responsiveValue = this.responsive();
+    if (!responsiveValue) return null;
 
-    if (typeof this.responsive === 'boolean') {
+    if (typeof responsiveValue === 'boolean') {
       return {
         breakpoint: 'xl',
         cardView: true,
@@ -203,7 +238,7 @@ export class DsTableComponent<T extends Record<string, unknown>>
       };
     }
 
-    return this.responsive;
+    return responsiveValue;
   }
 
   protected getNestedValue(
@@ -273,7 +308,7 @@ export class DsTableComponent<T extends Record<string, unknown>>
     this.sorters.set(newSorters);
 
     this.changeEvent.emit({
-      pagination: this.pagination,
+      pagination: this.pagination(),
       filters: this.filters(),
       sorter: newSorters,
       extra: { action: 'sort', currentDataSource: this.sortedData() },
@@ -281,16 +316,17 @@ export class DsTableComponent<T extends Record<string, unknown>>
   }
 
   protected handlePageChange(page: number, size: number): void {
-    if (!this.serverSide) {
+    if (!this.serverSide()) {
       this.currentPage.set(page);
       this.pageSize.set(size);
     }
 
+    const paginationValue = this.pagination();
     this.changeEvent.emit({
       pagination:
-        typeof this.pagination === 'object'
+        typeof paginationValue === 'object'
           ? {
-              ...this.pagination,
+              ...paginationValue,
               current: page,
               pageSize: size,
             }
@@ -318,11 +354,13 @@ export class DsTableComponent<T extends Record<string, unknown>>
       newKeys.includes(this.getRowKey(r, i))
     );
 
-    this.rowSelection.onChange?.(newKeys, selectedRows);
+    const rowSelectionValue = this.rowSelection();
+    rowSelectionValue?.onChange?.(newKeys, selectedRows);
   }
 
   protected toggleAllSelection(): void {
-    if (!this.rowSelection) return;
+    const rowSelectionValue = this.rowSelection();
+    if (!rowSelectionValue) return;
 
     const allKeys = this.paginatedData().map((record, index) =>
       this.getRowKey(record, index)
@@ -336,11 +374,12 @@ export class DsTableComponent<T extends Record<string, unknown>>
     this.selectedRowKeys.set(newKeys);
 
     const selectedRows = allSelected ? [] : this.paginatedData();
-    this.rowSelection.onChange?.(newKeys, selectedRows);
+    rowSelectionValue.onChange?.(newKeys, selectedRows);
   }
 
   protected toggleRowExpansion(record: T, index: number): void {
-    if (!this.expandable) return;
+    const expandableValue = this.expandable();
+    if (!expandableValue) return;
 
     const rowKey = this.getRowKey(record, index);
     const keys = this.expandedRowKeys();
@@ -351,7 +390,7 @@ export class DsTableComponent<T extends Record<string, unknown>>
       : [...keys, rowKey];
 
     this.expandedRowKeys.set(newKeys);
-    this.expandable.onExpand?.(!isExpanded, record);
+    expandableValue.onExpand?.(!isExpanded, record);
   }
 
   protected handleRowClick(record: T, index: number): void {
@@ -371,14 +410,14 @@ export class DsTableComponent<T extends Record<string, unknown>>
     return this.expandedRowKeys().includes(this.getRowKey(record, index));
   }
 
-  // Métodos auxiliares para usar Math en el template
   protected get Math(): typeof Math {
     return Math;
   }
 
   protected getTotalPages(): number {
-    if (this.pagination === false) return 1;
-    const total = this.pagination.totalRows || this.sortedData().length;
+    const paginationValue = this.pagination();
+    if (paginationValue === false) return 1;
+    const total = paginationValue.totalRows || this.sortedData().length;
     return Math.ceil(total / this.pageSize());
   }
 
@@ -388,19 +427,16 @@ export class DsTableComponent<T extends Record<string, unknown>>
     const pages: number[] = [];
 
     if (total <= 7) {
-      // Mostrar todas las páginas si son 7 o menos
       for (let i = 1; i <= total; i++) {
         pages.push(i);
       }
     } else {
-      // Siempre mostrar primera página
       pages.push(1);
 
       if (current > 3) {
-        pages.push(-1); // Ellipsis
+        pages.push(-1);
       }
 
-      // Páginas alrededor de la actual
       const start = Math.max(2, current - 1);
       const end = Math.min(total - 1, current + 1);
 
@@ -409,10 +445,9 @@ export class DsTableComponent<T extends Record<string, unknown>>
       }
 
       if (current < total - 2) {
-        pages.push(-1); // Ellipsis
+        pages.push(-1);
       }
 
-      // Siempre mostrar última página
       pages.push(total);
     }
 

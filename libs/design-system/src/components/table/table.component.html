@@ -1,11 +1,11 @@
 <div
   class="relative w-full bg-white rounded-lg shadow-sm overflow-hidden"
-  [class.border]="bordered"
-  [class.border-gray-300]="bordered"
+  [class.border]="bordered()"
+  [class.border-gray-300]="bordered()"
 >
   <!-- Loading State -->
   <div
-    *ngIf="loading"
+    *ngIf="loading()"
     class="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-10"
   >
     <div
@@ -15,7 +15,7 @@
 
   <!-- Error State -->
   <div
-    *ngIf="error && !loading"
+    *ngIf="error() && !loading()"
     class="p-8 text-center rounded-lg border border-red-200 bg-red-50"
   >
     <div class="flex flex-col items-center justify-center">
@@ -36,7 +36,7 @@
         Error al cargar los datos
       </h3>
       <p class="text-red-600 mb-4">
-        {{ error.message || 'Error al cargar los datos' }}
+        {{ error()?.message || 'Error al cargar los datos' }}
       </p>
       <button
         (click)="handlePageChange(currentPage(), pageSize())"
@@ -49,7 +49,7 @@
 
   <!-- Empty State -->
   <div
-    *ngIf="!loading && !error && paginatedData().length === 0"
+    *ngIf="!loading() && !error() && paginatedData().length === 0"
     class="p-8 text-center rounded-lg border border-gray-200 bg-white"
   >
     <div
@@ -78,19 +78,22 @@
   <!-- Card View (Mobile/Tablet) -->
   <div
     *ngIf="
-      shouldUseCardView() && !loading && !error && paginatedData().length > 0
+      shouldUseCardView() &&
+      !loading() &&
+      !error() &&
+      paginatedData().length > 0
     "
-    class="flex flex-col gap-4 p-4"
+    class="divide-y divide-gray-200 bg-white"
   >
     <div
       *ngFor="let record of paginatedData(); let i = index"
       [attr.data-row-key]="getRowKey(record, i)"
       (click)="handleRowClick(record, i)"
-      class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-orange-200"
+      class="p-5 cursor-pointer transition-all duration-200 hover:bg-gray-50 active:bg-gray-100"
     >
       <!-- Selection Checkbox -->
       <div
-        *ngIf="rowSelection"
+        *ngIf="rowSelectionValue()"
         class="flex items-center pb-3 mb-3 border-b border-gray-100"
       >
         <input
@@ -98,33 +101,61 @@
           [checked]="isRowSelected(record, i)"
           (change)="toggleRowSelection(record, i)"
           (click)="$event.stopPropagation()"
-          class="w-4 h-4 rounded border-gray-300 cursor-pointer checked:bg-brand-orange checked:border-brand-orange"
+          class="w-5 h-5 rounded border-gray-300 cursor-pointer checked:bg-brand-orange checked:border-brand-orange"
         />
       </div>
 
       <!-- Card Content -->
-      <div class="flex flex-col gap-3">
-        <div *ngFor="let column of safeColumns()" class="flex flex-col gap-1">
+      <div class="space-y-3">
+        <!-- ID - Grande y prominente -->
+        <div>
           <span
-            class="text-xs font-semibold text-gray-500 uppercase tracking-wide"
-            >{{ column.title }}:</span
+            class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1"
           >
+            {{ safeColumns()[0].title }}
+          </span>
           <span
-            class="text-sm text-gray-900 font-medium"
-            [innerHTML]="renderCell(column, record, i)"
+            class="text-lg font-bold text-brand-orange"
+            [innerHTML]="renderCell(safeColumns()[0], record, i)"
           ></span>
+        </div>
+
+        <!-- Título/Descripción principal -->
+        <div *ngIf="safeColumns().length > 1">
+          <h3
+            class="text-base font-bold text-gray-900 leading-snug"
+            [innerHTML]="renderCell(safeColumns()[1], record, i)"
+          ></h3>
+        </div>
+
+        <!-- Información en grid horizontal -->
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div
+            *ngFor="let column of safeColumns().slice(2)"
+            class="flex flex-col space-y-1"
+          >
+            <span
+              class="text-xs font-semibold text-gray-500 uppercase tracking-wide"
+            >
+              {{ column.title }}
+            </span>
+            <div
+              class="text-sm font-bold text-gray-900"
+              [innerHTML]="renderCell(column, record, i)"
+            ></div>
+          </div>
         </div>
       </div>
 
       <!-- Expand Button -->
-      <div *ngIf="expandable" class="pt-3 mt-3 border-t border-gray-100">
+      <div *ngIf="expandableValue()" class="pt-3 mt-3 border-t border-gray-100">
         <button
           (click)="toggleRowExpansion(record, i); $event.stopPropagation()"
-          class="w-full p-2 flex items-center justify-center bg-gray-50 border border-gray-200 rounded-md transition-colors hover:bg-gray-100"
+          class="w-full py-2 flex items-center justify-center bg-gray-50 border border-gray-200 rounded-lg transition-colors hover:bg-gray-100 active:bg-gray-200"
         >
           <lucide-icon
             [img]="isRowExpanded(record, i) ? ChevronUp : ChevronDown"
-            [size]="16"
+            [size]="18"
             class="text-gray-600"
           ></lucide-icon>
         </button>
@@ -132,7 +163,7 @@
 
       <!-- Expanded Content -->
       <div
-        *ngIf="expandable && isRowExpanded(record, i)"
+        *ngIf="expandableValue() && isRowExpanded(record, i)"
         class="pt-3 mt-3 border-t border-gray-100 animate-fade-in"
       >
         <!-- Aquí se renderiza el contenido expandido -->
@@ -143,22 +174,25 @@
   <!-- Table View (Desktop) -->
   <div
     *ngIf="
-      !shouldUseCardView() && !loading && !error && paginatedData().length > 0
+      !shouldUseCardView() &&
+      !loading() &&
+      !error() &&
+      paginatedData().length > 0
     "
     class="overflow-x-auto"
   >
     <table
       class="w-full border-collapse"
-      [class.text-sm]="size === 'small'"
-      [class.text-lg]="size === 'large'"
+      [class.text-sm]="sizeValue() === 'small'"
+      [class.text-lg]="sizeValue() === 'large'"
     >
       <!-- Table Header -->
       <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
           <!-- Selection Column -->
-          <th *ngIf="rowSelection" class="w-12 px-4 py-3 text-center">
+          <th *ngIf="rowSelectionValue()" class="w-12 px-4 py-3 text-center">
             <input
-              *ngIf="rowSelection.type === 'checkbox'"
+              *ngIf="rowSelectionValue()?.type === 'checkbox'"
               type="checkbox"
               (change)="toggleAllSelection()"
               class="w-4 h-4 rounded border-gray-300 cursor-pointer checked:bg-brand-orange checked:border-brand-orange"
@@ -166,7 +200,7 @@
           </th>
 
           <!-- Expand Column -->
-          <th *ngIf="expandable" class="w-12 px-4 py-3"></th>
+          <th *ngIf="expandableValue()" class="w-12 px-4 py-3"></th>
 
           <!-- Data Columns -->
           <th
@@ -177,7 +211,7 @@
             [class.cursor-pointer]="column.sorter"
             class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap select-none"
           >
-            <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1">
               <span>{{ column.title }}</span>
               <span
                 *ngIf="column.sorter"
@@ -186,19 +220,19 @@
                 <lucide-icon
                   *ngIf="getSortOrder(column) === null"
                   [img]="ArrowUpDown"
-                  [size]="16"
+                  [size]="14"
                   class="text-gray-400"
                 ></lucide-icon>
                 <lucide-icon
                   *ngIf="getSortOrder(column) === 'ascend'"
                   [img]="ChevronUp"
-                  [size]="16"
+                  [size]="14"
                   class="text-brand-orange"
                 ></lucide-icon>
                 <lucide-icon
                   *ngIf="getSortOrder(column) === 'descend'"
                   [img]="ChevronDown"
-                  [size]="16"
+                  [size]="14"
                   class="text-brand-orange"
                 ></lucide-icon>
               </span>
@@ -216,7 +250,7 @@
             class="border-b border-gray-100 cursor-pointer transition-colors hover:bg-gray-50 last:border-b-0"
           >
             <!-- Selection Cell -->
-            <td *ngIf="rowSelection" class="px-4 py-4 text-center">
+            <td *ngIf="rowSelectionValue()" class="px-4 py-4 text-center">
               <input
                 type="checkbox"
                 [checked]="isRowSelected(record, i)"
@@ -227,7 +261,7 @@
             </td>
 
             <!-- Expand Cell -->
-            <td *ngIf="expandable" class="px-4 py-4 text-center">
+            <td *ngIf="expandableValue()" class="px-4 py-4 text-center">
               <button
                 (click)="
                   toggleRowExpansion(record, i); $event.stopPropagation()
@@ -253,12 +287,15 @@
           </tr>
 
           <!-- Expanded Row -->
-          <tr *ngIf="expandable && isRowExpanded(record, i)" class="bg-gray-50">
+          <tr
+            *ngIf="expandableValue() && isRowExpanded(record, i)"
+            class="bg-gray-50"
+          >
             <td
               [attr.colspan]="
                 safeColumns().length +
-                (rowSelection ? 1 : 0) +
-                (expandable ? 1 : 0)
+                (rowSelectionValue() ? 1 : 0) +
+                (expandableValue() ? 1 : 0)
               "
               class="px-4 py-4"
             >
@@ -274,120 +311,185 @@
 
   <!-- Pagination -->
   <div
-    *ngIf="pagination && paginatedData().length > 0"
-    class="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-white"
+    *ngIf="paginationValue() && paginatedData().length > 0"
+    class="border-t border-gray-200 bg-white"
   >
-    <div class="text-sm text-gray-600">
-      Mostrando <strong>{{ (currentPage() - 1) * pageSize() + 1 }}</strong> a
-      <strong>{{
-        Math.min(
-          currentPage() * pageSize(),
-          pagination.totalRows || sortedData().length
-        )
-      }}</strong>
-      de
-      <strong>{{ pagination.totalRows || sortedData().length }}</strong>
-      registros
-    </div>
-
-    <div class="flex items-center gap-4">
-      <div class="flex items-center gap-1">
-        <!-- First Page Button -->
-        <button
-          [disabled]="currentPage() === 1"
-          (click)="handlePageChange(1, pageSize())"
-          class="w-8 h-8 flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-          title="Primera página"
-        >
-          <lucide-icon
-            [img]="ChevronsLeft"
-            [size]="16"
-            class="text-gray-600"
-          ></lucide-icon>
-        </button>
-
-        <!-- Previous Button -->
-        <button
-          [disabled]="currentPage() === 1"
-          (click)="handlePageChange(currentPage() - 1, pageSize())"
-          class="w-8 h-8 flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-          title="Página anterior"
-        >
-          <lucide-icon
-            [img]="ChevronLeft"
-            [size]="16"
-            class="text-gray-600"
-          ></lucide-icon>
-        </button>
-
-        <!-- Page Numbers -->
-        <ng-container *ngFor="let page of getPageNumbers()">
-          <button
-            *ngIf="page !== -1"
-            (click)="handlePageChange(page, pageSize())"
-            [class.bg-brand-orange]="page === currentPage()"
-            [class.text-white]="page === currentPage()"
-            [class.hover:bg-primary-600]="page === currentPage()"
-            [class.text-gray-700]="page !== currentPage()"
-            [class.hover:bg-gray-100]="page !== currentPage()"
-            [class.hover:text-gray-900]="page !== currentPage()"
-            class="min-w-[2rem] h-8 px-2 flex items-center justify-center rounded text-sm font-medium transition-colors"
-          >
-            {{ page }}
-          </button>
-          <span *ngIf="page === -1" class="px-2 text-gray-400 select-none">
-            •••
-          </span>
-        </ng-container>
-
-        <!-- Next Button -->
-        <button
-          [disabled]="currentPage() === getTotalPages()"
-          (click)="handlePageChange(currentPage() + 1, pageSize())"
-          class="w-8 h-8 flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-          title="Página siguiente"
-        >
-          <lucide-icon
-            [img]="ChevronRight"
-            [size]="16"
-            class="text-gray-600"
-          ></lucide-icon>
-        </button>
-
-        <!-- Last Page Button -->
-        <button
-          [disabled]="currentPage() === getTotalPages()"
-          (click)="handlePageChange(getTotalPages(), pageSize())"
-          class="w-8 h-8 flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-          title="Última página"
-        >
-          <lucide-icon
-            [img]="ChevronsRight"
-            [size]="16"
-            class="text-gray-600"
-          ></lucide-icon>
-        </button>
+    <!-- Info de registros - Solo desktop -->
+    <div class="hidden sm:flex items-center justify-between px-6 py-4">
+      <div class="text-sm text-gray-600">
+        Mostrando <strong>{{ (currentPage() - 1) * pageSize() + 1 }}</strong> a
+        <strong>{{ Math.min(currentPage() * pageSize(), totalRows()) }}</strong>
+        de
+        <strong>{{ totalRows() }}</strong>
+        registros
       </div>
 
-      <!-- Page Size Selector -->
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-1">
+          <!-- First Page Button -->
+          <button
+            [disabled]="currentPage() === 1"
+            (click)="handlePageChange(1, pageSize())"
+            class="w-9 h-9 flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 active:bg-gray-200"
+            title="Primera página"
+          >
+            <lucide-icon
+              [img]="ChevronsLeft"
+              [size]="16"
+              class="text-gray-600"
+            ></lucide-icon>
+          </button>
+
+          <!-- Previous Button -->
+          <button
+            [disabled]="currentPage() === 1"
+            (click)="handlePageChange(currentPage() - 1, pageSize())"
+            class="w-9 h-9 flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 active:bg-gray-200"
+            title="Página anterior"
+          >
+            <lucide-icon
+              [img]="ChevronLeft"
+              [size]="16"
+              class="text-gray-600"
+            ></lucide-icon>
+          </button>
+
+          <!-- Page Numbers -->
+          <ng-container *ngFor="let page of getPageNumbers()">
+            <button
+              *ngIf="page !== -1"
+              (click)="handlePageChange(page, pageSize())"
+              [class.bg-brand-orange]="page === currentPage()"
+              [class.text-white]="page === currentPage()"
+              [class.hover:bg-orange-600]="page === currentPage()"
+              [class.text-gray-700]="page !== currentPage()"
+              [class.hover:bg-gray-100]="page !== currentPage()"
+              [class.hover:text-gray-900]="page !== currentPage()"
+              class="min-w-[2.25rem] h-9 px-2 flex items-center justify-center rounded text-sm font-medium transition-colors active:scale-95"
+            >
+              {{ page }}
+            </button>
+            <span
+              *ngIf="page === -1"
+              class="px-2 text-gray-400 select-none text-sm"
+            >
+              •••
+            </span>
+          </ng-container>
+
+          <!-- Next Button -->
+          <button
+            [disabled]="currentPage() === getTotalPages()"
+            (click)="handlePageChange(currentPage() + 1, pageSize())"
+            class="w-9 h-9 flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 active:bg-gray-200"
+            title="Página siguiente"
+          >
+            <lucide-icon
+              [img]="ChevronRight"
+              [size]="16"
+              class="text-gray-600"
+            ></lucide-icon>
+          </button>
+
+          <!-- Last Page Button -->
+          <button
+            [disabled]="currentPage() === getTotalPages()"
+            (click)="handlePageChange(getTotalPages(), pageSize())"
+            class="w-9 h-9 flex items-center justify-center rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 active:bg-gray-200"
+            title="Última página"
+          >
+            <lucide-icon
+              [img]="ChevronsRight"
+              [size]="16"
+              class="text-gray-600"
+            ></lucide-icon>
+          </button>
+        </div>
+
+        <!-- Page Size Selector - Solo desktop -->
+        <div
+          *ngIf="showSizeChanger() && pageSizeOptions().length > 0"
+          class="flex items-center gap-2 pl-4 border-l border-gray-300"
+        >
+          <span class="text-sm text-gray-600 whitespace-nowrap">Mostrar:</span>
+          <select
+            [value]="pageSize()"
+            (change)="handlePageChange(1, +$any($event.target).value)"
+            class="px-2 py-1 text-sm border border-gray-300 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+          >
+            <option *ngFor="let size of pageSizeOptions()" [value]="size">
+              {{ size }}
+            </option>
+          </select>
+          <span class="text-sm text-gray-600 whitespace-nowrap"
+            >por página</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Paginación móvil - Mejorada -->
+    <div class="sm:hidden flex flex-col">
+      <!-- Info de registros -->
       <div
-        *ngIf="pagination.showSizeChanger && pagination.pageSizeOptions"
-        class="flex items-center gap-2 pl-4 border-l border-gray-300"
+        class="px-4 py-3 text-center text-sm text-gray-600 border-b border-gray-200"
       >
-        <span class="text-sm text-gray-600 whitespace-nowrap">Mostrar:</span>
+        Mostrando <strong>{{ (currentPage() - 1) * pageSize() + 1 }}</strong> a
+        <strong>{{ Math.min(currentPage() * pageSize(), totalRows()) }}</strong>
+        de
+        <strong>{{ totalRows() }}</strong>
+      </div>
+
+      <!-- Controles de navegación -->
+      <div class="flex items-center justify-center gap-3 px-4 py-3">
+        <!-- Selector de tamaño (sin etiquetas) -->
         <select
+          *ngIf="showSizeChanger() && pageSizeOptions().length > 0"
           [value]="pageSize()"
           (change)="handlePageChange(1, +$any($event.target).value)"
-          class="px-2 py-1 text-sm border border-gray-300 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+          class="px-3 py-2 text-sm border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange bg-white font-medium text-gray-700"
         >
-          <option
-            *ngFor="let size of pagination.pageSizeOptions"
-            [value]="size"
-          >
+          <option *ngFor="let size of pageSizeOptions()" [value]="size">
             {{ size }}
           </option>
         </select>
-        <span class="text-sm text-gray-600 whitespace-nowrap">por página</span>
+
+        <!-- Navegación -->
+        <div class="flex items-center gap-2">
+          <button
+            [disabled]="currentPage() === 1"
+            (click)="handlePageChange(currentPage() - 1, pageSize())"
+            class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed bg-gray-100 active:bg-gray-200"
+            title="Anterior"
+          >
+            <lucide-icon
+              [img]="ChevronLeft"
+              [size]="20"
+              class="text-gray-700"
+            ></lucide-icon>
+          </button>
+
+          <div class="flex items-center gap-1.5 mx-1">
+            <span class="text-sm font-medium text-gray-700">{{
+              currentPage()
+            }}</span>
+            <span class="text-sm text-gray-400">/</span>
+            <span class="text-sm text-gray-500">{{ getTotalPages() }}</span>
+          </div>
+
+          <button
+            [disabled]="currentPage() === getTotalPages()"
+            (click)="handlePageChange(currentPage() + 1, pageSize())"
+            class="w-10 h-10 flex items-center justify-center rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed bg-gray-100 active:bg-gray-200"
+            title="Siguiente"
+          >
+            <lucide-icon
+              [img]="ChevronRight"
+              [size]="20"
+              class="text-gray-700"
+            ></lucide-icon>
+          </button>
+        </div>
       </div>
     </div>
   </div>
