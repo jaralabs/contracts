@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'config',
+  displayName: 'shared',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
@@ -8,4 +8,10 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/shared',
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/*.spec.ts',
+    '!src/**/index.ts',
+    '!src/test-setup.ts',
+  ],
 };
