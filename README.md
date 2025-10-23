@@ -32,10 +32,9 @@ cp .env.example .env
 Editar el archivo `.env` con tus credenciales de AWS Cognito:
 
 ```env
-AWS_REGION=us-east-1
-AWS_USER_POOL_ID=tu-user-pool-id
-AWS_USER_POOL_CLIENT_ID=tu-client-id
-AWS_IDENTITY_POOL_ID=tu-identity-pool-id
+AWS_USER_POOL_ID= us-east-1_cURobggRv
+AWS_USER_POOL_CLIENT_ID= 70km7nv8tdu1upubtm8le7evep
+AWS_IDENTITY_POOL_ID= us-east-1:7b1efcc9-3475-451b-899e-b5ebb9853bce
 ```
 
 ---
