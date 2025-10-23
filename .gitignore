@@ -40,3 +40,6 @@ Thumbs.db
 
 .nx/cache
 .angular
+
+# Copilot instructions (internal only)
+COPILOT.MD

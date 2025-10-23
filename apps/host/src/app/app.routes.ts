@@ -1,16 +1,24 @@
 // apps/host/src/app/app.routes.ts
 import { Route } from '@angular/router';
 import { loadRemoteModule } from '@nx/angular/mf';
-import { HomePageComponent } from './home-page.component';
+import { authGuard } from './guards/auth.guard';
+import { LayoutComponent } from './layout/layout.component';
+import { LoginPageComponent } from './login-page.component';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    component: HomePageComponent,
+    component: LoginPageComponent,
   },
   {
-    path: 'signature',
+    path: 'erp',
+    component: LayoutComponent,
+    canActivate: [authGuard],
     loadChildren: () =>
-      loadRemoteModule('signature', './Routes').then((m) => m.appRoutes),
+      loadRemoteModule('erp', './Routes').then((m) => m.appRoutes),
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];

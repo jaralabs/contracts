@@ -9,7 +9,7 @@
     class="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-10"
   >
     <div
-      class="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"
+      class="w-10 h-10 border-4 border-orange-200 border-t-brand-orange rounded-full animate-spin"
     ></div>
   </div>
 
@@ -86,7 +86,7 @@
       *ngFor="let record of paginatedData(); let i = index"
       [attr.data-row-key]="getRowKey(record, i)"
       (click)="handleRowClick(record, i)"
-      class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-200"
+      class="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-orange-200"
     >
       <!-- Selection Checkbox -->
       <div
@@ -98,7 +98,7 @@
           [checked]="isRowSelected(record, i)"
           (change)="toggleRowSelection(record, i)"
           (click)="$event.stopPropagation()"
-          class="w-4 h-4 rounded border-gray-300 cursor-pointer checked:bg-blue-600 checked:border-blue-600"
+          class="w-4 h-4 rounded border-gray-300 cursor-pointer checked:bg-brand-orange checked:border-brand-orange"
         />
       </div>
 
@@ -161,7 +161,7 @@
               *ngIf="rowSelection.type === 'checkbox'"
               type="checkbox"
               (change)="toggleAllSelection()"
-              class="w-4 h-4 rounded border-gray-300 cursor-pointer checked:bg-blue-600 checked:border-blue-600"
+              class="w-4 h-4 rounded border-gray-300 cursor-pointer checked:bg-brand-orange checked:border-brand-orange"
             />
           </th>
 
@@ -193,13 +193,13 @@
                   *ngIf="getSortOrder(column) === 'ascend'"
                   [img]="ChevronUp"
                   [size]="16"
-                  class="text-blue-600"
+                  class="text-brand-orange"
                 ></lucide-icon>
                 <lucide-icon
                   *ngIf="getSortOrder(column) === 'descend'"
                   [img]="ChevronDown"
                   [size]="16"
-                  class="text-blue-600"
+                  class="text-brand-orange"
                 ></lucide-icon>
               </span>
             </div>
@@ -222,7 +222,7 @@
                 [checked]="isRowSelected(record, i)"
                 (change)="toggleRowSelection(record, i)"
                 (click)="$event.stopPropagation()"
-                class="w-4 h-4 rounded border-gray-300 cursor-pointer checked:bg-blue-600 checked:border-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+                class="w-4 h-4 rounded border-gray-300 cursor-pointer checked:bg-brand-orange checked:border-brand-orange focus:ring-2 focus:ring-primary-400 focus:ring-offset-1"
               />
             </td>
 
@@ -232,7 +232,7 @@
                 (click)="
                   toggleRowExpansion(record, i); $event.stopPropagation()
                 "
-                class="p-1 transition-colors hover:text-blue-600 focus:outline-none"
+                class="p-1 transition-colors hover:text-brand-orange focus:outline-none"
               >
                 <lucide-icon
                   [img]="isRowExpanded(record, i) ? ChevronDown : ChevronRight"
@@ -325,9 +325,9 @@
           <button
             *ngIf="page !== -1"
             (click)="handlePageChange(page, pageSize())"
-            [class.bg-blue-600]="page === currentPage()"
+            [class.bg-brand-orange]="page === currentPage()"
             [class.text-white]="page === currentPage()"
-            [class.hover:bg-blue-700]="page === currentPage()"
+            [class.hover:bg-primary-600]="page === currentPage()"
             [class.text-gray-700]="page !== currentPage()"
             [class.hover:bg-gray-100]="page !== currentPage()"
             [class.hover:text-gray-900]="page !== currentPage()"
@@ -378,7 +378,7 @@
         <select
           [value]="pageSize()"
           (change)="handlePageChange(1, +$any($event.target).value)"
-          class="px-2 py-1 text-sm border border-gray-300 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          class="px-2 py-1 text-sm border border-gray-300 rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
         >
           <option
             *ngFor="let size of pagination.pageSizeOptions"

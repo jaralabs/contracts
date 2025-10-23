@@ -20,7 +20,6 @@ interface Contract extends Record<string, unknown> {
   standalone: true,
   imports: [DsTableComponent],
   templateUrl: './signature-page.component.html',
-  styleUrl: './signature-page.component.scss',
 })
 export class SignaturePageComponent implements OnInit {
   // Mock data para probar la tabla

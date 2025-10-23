@@ -1,0 +1,581 @@
+{
+  "contratos": [
+    {
+      "id": "CON-1001",
+      "titulo": "Acuerdo de Nivel de Servicio (ANS) para Soporte IT",
+      "estado": "activo",
+      "fecha_creacion": "2024-12-15T08:30:00Z",
+      "fecha_inicio": "2025-01-01",
+      "fecha_fin": "2025-12-31",
+      "fecha_firma": "2024-12-20",
+      "valor": 10000,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-001",
+          "nombre": "Consultora Tech Solutions",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Carlos Rodríguez",
+            "email": "carlos.rodriguez@techsolutions.com"
+          }
+        },
+        {
+          "id": "CLI-002",
+          "nombre": "Corporación ABC",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "María González",
+            "email": "maria.gonzalez@corporacionabc.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Objeto del contrato: Prestación de servicios profesionales de desarrollo de software y mantenimiento de sistemas informáticos."
+        },
+        {
+          "numero": 2,
+          "texto": "Duración: El presente contrato tendrá vigencia de 12 meses calendario, contados a partir de la fecha de inicio establecida."
+        },
+        {
+          "numero": 3,
+          "texto": "Forma de pago: El cliente realizará pagos mensuales dentro de los primeros 5 días de cada mes."
+        }
+      ],
+      "documentos_adjuntos": [
+        {
+          "nombre": "Contrato_Principal.pdf",
+          "url": "https://docs.example.com/contratos/CON-1001/contrato_principal.pdf"
+        },
+        {
+          "nombre": "Anexo_Tecnico.pdf",
+          "url": "https://docs.example.com/contratos/CON-1001/anexo_tecnico.pdf"
+        }
+      ],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2024-12-15T08:30:00Z",
+          "usuario": "admin@example.com"
+        },
+        {
+          "estado": "pendiente_firma",
+          "fecha": "2024-12-18T10:00:00Z",
+          "usuario": "admin@example.com"
+        },
+        {
+          "estado": "activo",
+          "fecha": "2024-12-20T14:30:00Z",
+          "usuario": "system"
+        }
+      ]
+    },
+    {
+      "id": "CON-1002",
+      "titulo": "Desarrollo de plataforma e-commerce",
+      "estado": "pendiente_firma",
+      "fecha_creacion": "2025-01-10T09:00:00Z",
+      "fecha_inicio": "2025-02-01",
+      "fecha_fin": "2025-11-30",
+      "fecha_firma": null,
+      "valor": 15000,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-003",
+          "nombre": "Digital Agency",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Laura Martínez",
+            "email": "laura.martinez@digitalagency.com"
+          }
+        },
+        {
+          "id": "CLI-004",
+          "nombre": "Tienda Online XYZ",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Pedro Sánchez",
+            "email": "pedro.sanchez@tiendaxyz.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Alcance: Desarrollo de tienda online responsive con panel administrativo completo."
+        },
+        {
+          "numero": 2,
+          "texto": "Entregables: Código fuente, documentación técnica, capacitación al personal y garantía de 6 meses."
+        }
+      ],
+      "documentos_adjuntos": [
+        {
+          "nombre": "Propuesta_Comercial.pdf",
+          "url": "https://docs.example.com/contratos/CON-1002/propuesta.pdf"
+        }
+      ],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2025-01-10T09:00:00Z",
+          "usuario": "manager@example.com"
+        },
+        {
+          "estado": "pendiente_firma",
+          "fecha": "2025-01-12T11:45:00Z",
+          "usuario": "manager@example.com"
+        }
+      ]
+    },
+    {
+      "id": "CON-1003",
+      "titulo": "Consultoría en transformación digital",
+      "estado": "finalizado",
+      "fecha_creacion": "2023-12-01T10:00:00Z",
+      "fecha_inicio": "2024-01-01",
+      "fecha_fin": "2024-12-31",
+      "fecha_firma": "2023-12-15",
+      "valor": 8000,
+      "moneda": "EUR",
+      "partes": [
+        {
+          "id": "CLI-005",
+          "nombre": "Consulting Group International",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Robert Smith",
+            "email": "robert.smith@consultinggroup.eu"
+          }
+        },
+        {
+          "id": "CLI-006",
+          "nombre": "Industrias Manufacturing SA",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Ana López",
+            "email": "ana.lopez@manufacturing.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Servicios: Análisis, diagnóstico y plan de mejora de procesos empresariales con enfoque en transformación digital."
+        }
+      ],
+      "documentos_adjuntos": [
+        {
+          "nombre": "Informe_Final.pdf",
+          "url": "https://docs.example.com/contratos/CON-1003/informe_final.pdf"
+        },
+        {
+          "nombre": "Plan_Mejora.xlsx",
+          "url": "https://docs.example.com/contratos/CON-1003/plan_mejora.xlsx"
+        }
+      ],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2023-12-01T10:00:00Z",
+          "usuario": "consultant@example.com"
+        },
+        {
+          "estado": "activo",
+          "fecha": "2023-12-15T14:00:00Z",
+          "usuario": "system"
+        },
+        {
+          "estado": "finalizado",
+          "fecha": "2024-12-31T23:59:00Z",
+          "usuario": "system"
+        }
+      ]
+    },
+    {
+      "id": "CON-1004",
+      "titulo": "Soporte técnico 24/7 para infraestructura IT",
+      "estado": "activo",
+      "fecha_creacion": "2025-02-01T12:00:00Z",
+      "fecha_inicio": "2025-03-01",
+      "fecha_fin": "2026-03-01",
+      "fecha_firma": "2025-02-10",
+      "valor": 12000,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-007",
+          "nombre": "TechSupport Solutions",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "David Chen",
+            "email": "david.chen@techsupport.com"
+          }
+        },
+        {
+          "id": "CLI-008",
+          "nombre": "Hospital Central",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Dr. Patricia Ruiz",
+            "email": "patricia.ruiz@hospitalcentral.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "SLA: Tiempo de respuesta de 2 horas para incidencias críticas y 8 horas para incidencias menores."
+        },
+        {
+          "numero": 2,
+          "texto": "Cobertura: Soporte remoto y presencial cuando sea necesario, disponibilidad 24/7 los 365 días del año."
+        }
+      ],
+      "documentos_adjuntos": [],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2025-02-01T12:00:00Z",
+          "usuario": "it@example.com"
+        },
+        {
+          "estado": "pendiente_firma",
+          "fecha": "2025-02-05T09:30:00Z",
+          "usuario": "it@example.com"
+        },
+        {
+          "estado": "activo",
+          "fecha": "2025-02-10T15:00:00Z",
+          "usuario": "system"
+        }
+      ]
+    },
+    {
+      "id": "CON-1005",
+      "titulo": "Mantenimiento preventivo de equipos de red",
+      "estado": "activo",
+      "fecha_creacion": "2025-01-05T14:00:00Z",
+      "fecha_inicio": "2025-01-15",
+      "fecha_fin": "2025-12-15",
+      "fecha_firma": "2025-01-10",
+      "valor": 5000,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-009",
+          "nombre": "Network Services Pro",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Miguel Ángel Torres",
+            "email": "miguel.torres@networkpro.com"
+          }
+        },
+        {
+          "id": "CLI-010",
+          "nombre": "Oficinas Corporativas DEF",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Sandra Morales",
+            "email": "sandra.morales@oficinadef.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Frecuencia: Mantenimiento preventivo mensual programado con ventanas de 4 horas."
+        }
+      ],
+      "documentos_adjuntos": [
+        {
+          "nombre": "Cronograma_Mantenimiento.xlsx",
+          "url": "https://docs.example.com/contratos/CON-1005/cronograma.xlsx"
+        }
+      ],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2025-01-05T14:00:00Z",
+          "usuario": "operations@example.com"
+        },
+        {
+          "estado": "activo",
+          "fecha": "2025-01-10T10:15:00Z",
+          "usuario": "system"
+        }
+      ]
+    },
+    {
+      "id": "CON-1006",
+      "titulo": "Licenciamiento de software enterprise",
+      "estado": "activo",
+      "fecha_creacion": "2024-12-10T10:00:00Z",
+      "fecha_inicio": "2025-01-01",
+      "fecha_fin": "2026-01-01",
+      "fecha_firma": "2024-12-28",
+      "valor": 25000,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-011",
+          "nombre": "Software Corp",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Jennifer Williams",
+            "email": "jennifer.williams@softwarecorp.com"
+          }
+        },
+        {
+          "id": "CLI-012",
+          "nombre": "Banco Nacional",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Lic. Ricardo Fernández",
+            "email": "ricardo.fernandez@banconacional.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Licenciamiento: Licencia perpetua para 500 usuarios concurrentes con mantenimiento incluido."
+        },
+        {
+          "numero": 2,
+          "texto": "Actualizaciones: Acceso a todas las actualizaciones mayores y menores durante la vigencia del contrato."
+        }
+      ],
+      "documentos_adjuntos": [],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2024-12-10T10:00:00Z",
+          "usuario": "legal@example.com"
+        },
+        {
+          "estado": "pendiente_firma",
+          "fecha": "2024-12-20T15:30:00Z",
+          "usuario": "legal@example.com"
+        },
+        {
+          "estado": "activo",
+          "fecha": "2024-12-28T09:00:00Z",
+          "usuario": "system"
+        }
+      ]
+    },
+    {
+      "id": "CON-1007",
+      "titulo": "Programa de capacitación en metodologías ágiles",
+      "estado": "pendiente_firma",
+      "fecha_creacion": "2025-02-01T09:00:00Z",
+      "fecha_inicio": "2025-04-01",
+      "fecha_fin": "2025-06-30",
+      "fecha_firma": null,
+      "valor": 7500,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-013",
+          "nombre": "Agile Training Academy",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Sofia Ramírez",
+            "email": "sofia.ramirez@agileacademy.com"
+          }
+        },
+        {
+          "id": "CLI-014",
+          "nombre": "Desarrollos Software SA",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Jorge Medina",
+            "email": "jorge.medina@desarrollosoftware.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Programa: 12 sesiones de 4 horas cada una, formato híbrido (presencial y virtual) con certificación incluida."
+        }
+      ],
+      "documentos_adjuntos": [],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2025-02-01T09:00:00Z",
+          "usuario": "hr@example.com"
+        },
+        {
+          "estado": "pendiente_firma",
+          "fecha": "2025-02-05T11:00:00Z",
+          "usuario": "hr@example.com"
+        }
+      ]
+    },
+    {
+      "id": "CON-1008",
+      "titulo": "Hosting dedicado y dominio",
+      "estado": "activo",
+      "fecha_creacion": "2024-12-20T14:00:00Z",
+      "fecha_inicio": "2025-01-01",
+      "fecha_fin": "2027-01-01",
+      "fecha_firma": "2024-12-30",
+      "valor": 3600,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-015",
+          "nombre": "CloudHost Services",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Alex Johnson",
+            "email": "alex.johnson@cloudhost.com"
+          }
+        },
+        {
+          "id": "CLI-016",
+          "nombre": "Startup Innovation",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Elena Castro",
+            "email": "elena.castro@startupinnovation.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Recursos: Servidor dedicado con 16GB RAM, 8 cores CPU, 1TB SSD, tráfico ilimitado y dominio incluido."
+        },
+        {
+          "numero": 2,
+          "texto": "Uptime: Garantía de disponibilidad del 99.9% con compensación por tiempo de inactividad."
+        }
+      ],
+      "documentos_adjuntos": [],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2024-12-20T14:00:00Z",
+          "usuario": "devops@example.com"
+        },
+        {
+          "estado": "activo",
+          "fecha": "2024-12-30T00:00:00Z",
+          "usuario": "system"
+        }
+      ]
+    },
+    {
+      "id": "CON-1009",
+      "titulo": "Auditoría de seguridad informática",
+      "estado": "borrador",
+      "fecha_creacion": "2025-02-15T10:30:00Z",
+      "fecha_inicio": "2025-03-15",
+      "fecha_fin": "2025-05-15",
+      "fecha_firma": null,
+      "valor": 18000,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-017",
+          "nombre": "CyberSecurity Experts",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Michael Brown",
+            "email": "michael.brown@cybersec.com"
+          }
+        },
+        {
+          "id": "CLI-018",
+          "nombre": "Empresa Financiera Global",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Lic. Carmen Vega",
+            "email": "carmen.vega@financieraglobal.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Alcance: Auditoría completa de infraestructura, pruebas de penetración y análisis de vulnerabilidades."
+        }
+      ],
+      "documentos_adjuntos": [],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2025-02-15T10:30:00Z",
+          "usuario": "security@example.com"
+        }
+      ]
+    },
+    {
+      "id": "CON-1010",
+      "titulo": "Desarrollo de aplicación móvil",
+      "estado": "suspendido",
+      "fecha_creacion": "2024-11-01T08:00:00Z",
+      "fecha_inicio": "2024-12-01",
+      "fecha_fin": "2025-06-01",
+      "fecha_firma": "2024-11-20",
+      "valor": 22000,
+      "moneda": "USD",
+      "partes": [
+        {
+          "id": "CLI-019",
+          "nombre": "Mobile Dev Studio",
+          "rol": "Proveedor",
+          "contacto_principal": {
+            "nombre": "Andrea Silva",
+            "email": "andrea.silva@mobiledev.com"
+          }
+        },
+        {
+          "id": "CLI-020",
+          "nombre": "Retail Express",
+          "rol": "Cliente",
+          "contacto_principal": {
+            "nombre": "Luis Herrera",
+            "email": "luis.herrera@retailexpress.com"
+          }
+        }
+      ],
+      "clausulas": [
+        {
+          "numero": 1,
+          "texto": "Entregables: Aplicación nativa para iOS y Android con backend API REST."
+        }
+      ],
+      "documentos_adjuntos": [
+        {
+          "nombre": "Especificaciones_Tecnicas.pdf",
+          "url": "https://docs.example.com/contratos/CON-1010/especificaciones.pdf"
+        }
+      ],
+      "historial_estados": [
+        {
+          "estado": "borrador",
+          "fecha": "2024-11-01T08:00:00Z",
+          "usuario": "pm@example.com"
+        },
+        {
+          "estado": "activo",
+          "fecha": "2024-11-20T12:00:00Z",
+          "usuario": "system"
+        },
+        {
+          "estado": "suspendido",
+          "fecha": "2025-02-10T14:30:00Z",
+          "usuario": "pm@example.com"
+        }
+      ]
+    }
+  ]
+}

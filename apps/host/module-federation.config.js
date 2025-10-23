@@ -1,4 +1,4 @@
 module.exports = {
   name: 'host',
-  remotes: ['signature'],
+  remotes: ['erp'],
 };

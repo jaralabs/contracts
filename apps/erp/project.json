@@ -1,29 +1,26 @@
 {
-  "name": "signature",
+  "name": "erp",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "apps/signature/src",
+  "sourceRoot": "apps/erp/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular-builders/custom-webpack:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/signature",
-        "index": "apps/signature/src/index.html",
-        "main": "apps/signature/src/main.ts",
+        "outputPath": "dist/apps/erp",
+        "index": "apps/erp/src/index.html",
+        "main": "apps/erp/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/signature/tsconfig.app.json",
+        "tsConfig": "apps/erp/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [
-          "apps/signature/src/favicon.ico",
-          "apps/signature/src/assets"
-        ],
-        "styles": ["apps/signature/src/styles.scss"],
+        "assets": ["apps/erp/src/favicon.ico", "apps/erp/src/assets"],
+        "styles": ["apps/erp/src/styles.scss"],
         "scripts": [],
         "customWebpackConfig": {
-          "path": "apps/signature/webpack.config.js"
+          "path": "apps/erp/webpack.config.js"
         }
       },
       "configurations": {
@@ -61,10 +58,10 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "signature:build:production"
+          "buildTarget": "erp:build:production"
         },
         "development": {
-          "buildTarget": "signature:build:development"
+          "buildTarget": "erp:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -72,7 +69,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "signature:build"
+        "buildTarget": "erp:build"
       }
     },
     "lint": {

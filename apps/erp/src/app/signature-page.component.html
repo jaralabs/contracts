@@ -1,0 +1,20 @@
+<div class="h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+      Gestión de Contratos
+    </h1>
+  </div>
+
+  <lib-ds-table
+    [dataSource]="contracts"
+    [columns]="columns"
+    [pagination]="paginationConfig"
+    [loading]="false"
+    [bordered]="true"
+    [size]="'middle'"
+    [rowKey]="'id'"
+    (changeEvent)="onChange($event)"
+    (rowClickEvent)="onRowClick($event)"
+  >
+  </lib-ds-table>
+</div>

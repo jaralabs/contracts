@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-home-page',
+  selector: 'app-home',
   standalone: true,
-  imports: [RouterModule],
   template: `
     <div class="flex items-center justify-center h-full">
       <div class="text-center">
@@ -21,4 +19,4 @@ import { RouterModule } from '@angular/router';
     </div>
   `,
 })
-export class HomePageComponent {}
+export class HomeComponent {}
