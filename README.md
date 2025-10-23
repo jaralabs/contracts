@@ -37,6 +37,13 @@ AWS_USER_POOL_CLIENT_ID= 70km7nv8tdu1upubtm8le7evep
 AWS_IDENTITY_POOL_ID= us-east-1:7b1efcc9-3475-451b-899e-b5ebb9853bce
 ```
 
+Para loguearte en el sitema usa estas credenciales, si usas el env anterior
+
+```login
+email: test@example.com
+password: Nicolas1.
+```
+
 ---
 
 ## ▶️ Servidores de desarrollo
