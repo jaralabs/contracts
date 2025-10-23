@@ -12,20 +12,8 @@
     "build": "nx build",
     "build:host": "nx build host --configuration=production",
     "build:erp": "nx build erp --configuration=production",
-    "lint": "nx lint",
-    "lint:fix": "nx lint --fix",
-    "test": "nx test",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:headed": "playwright test --headed",
-    "test:e2e:report": "playwright show-report",
-    "affected": "nx affected",
-    "affected:build": "nx affected --target=build",
-    "affected:test": "nx affected --target=test",
-    "clean": "nx reset && rm -rf dist",
-    "graph": "nx graph",
-    "dep-graph": "nx dep-graph",
-    "prepare": "nx format:write"
+    "test": "nx test shared",
+    "test:e2e": "playwright test"
   },
   "private": true,
   "devDependencies": {
