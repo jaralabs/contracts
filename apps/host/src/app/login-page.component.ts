@@ -1,11 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   HeaderComponent,
   InputComponent,
   LabelComponent,
 } from '@contracts/design-system';
-import { AuthService } from './services/auth.service';
+import { AuthService } from '@contracts/shared';
 
 @Component({
   selector: 'app-login-page',
@@ -338,7 +339,7 @@ import { AuthService } from './services/auth.service';
     </div>
   `,
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnInit {
   email = '';
   password = '';
   newPassword = '';
@@ -346,7 +347,13 @@ export class LoginPageComponent {
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/erp']);
+    }
+  }
 
   async onLogin(event: Event) {
     event.preventDefault();
@@ -382,7 +389,6 @@ export class LoginPageComponent {
       return;
     }
 
-    // Validar requisitos de contraseña
     if (this.newPassword.length < 8) {
       this.errorMessage.set('La contraseña debe tener al menos 8 caracteres');
       return;
