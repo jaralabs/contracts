@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Tab, TabsComponent } from '@contracts/design-system';
 import { ContractsService, Contrato } from '@contracts/shared';
 
 @Component({
   selector: 'app-contract-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TabsComponent],
   templateUrl: './contract-detail.component.html',
 })
 export class ContractDetailComponent implements OnInit {
@@ -17,6 +18,12 @@ export class ContractDetailComponent implements OnInit {
   contract = signal<Contrato | null>(null);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
+  activeTab = signal<string>('details');
+
+  tabs: Tab[] = [
+    { key: 'details', label: 'Detalles del Contrato' },
+    { key: 'history', label: 'Historial' },
+  ];
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -45,7 +52,7 @@ export class ContractDetailComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/erp']);
+    this.router.navigate(['/signature']);
   }
 
   getEstadoBadgeClass(estado: string): string {
@@ -84,5 +91,9 @@ export class ContractDetailComponent implements OnInit {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`;
+  }
+
+  onTabChange(key: string) {
+    this.activeTab.set(key);
   }
 }

@@ -17,7 +17,6 @@ import {
   standalone: true,
   imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
 })
 export class LayoutComponent {
   // Icons - need to be registered for Lucide to work

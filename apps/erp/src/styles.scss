@@ -60,6 +60,18 @@
   font-family: 'Work Sans', sans-serif;
 }
 
+/* Ocultar scrollbar en todo el documento */
+html,
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
+}
+
 /* Ocultar scrollbar pero mantener funcionalidad */
 .scrollbar-hide {
   /* Firefox */
@@ -72,4 +84,14 @@
 .scrollbar-hide::-webkit-scrollbar {
   /* Chrome, Safari y Opera */
   display: none;
+}
+
+/* Ocultar todos los scrollbars por defecto */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
 }
